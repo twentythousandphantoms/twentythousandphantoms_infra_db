@@ -1,0 +1,7 @@
+*.retry
+*.log
+*.pyc
+.molecule
+.cache
+.pytest_cache
+credentials.json
