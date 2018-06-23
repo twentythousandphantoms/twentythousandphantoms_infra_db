@@ -1,3 +1,4 @@
+*.tar
 *.retry
 *.log
 *.pyc
@@ -5,3 +6,4 @@
 .cache
 .pytest_cache
 credentials.json
+google_compute_engine
