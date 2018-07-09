@@ -2,15 +2,19 @@ language: python
 python:
 - 2.7.12
 before_install:
-- openssl aes-256-cbc -K $encrypted_840c52c233f5_key -iv $encrypted_840c52c233f5_iv
-  -in secrets.tar.enc -out secrets.tar -d
+- openssl aes-256-cbc -K $encrypted_840c52c233f5_key -iv $encrypted_840c52c233f5_iv -in secrets.tar.enc -out secrets.tar -d
+- tar xvf secrets.tar
+- mv google_compute_engine /home/travis/.ssh/
+- chmod 0600 /home/travis/.ssh/google_compute_engine
 install:
-- pip install ansible==2.5.5 molecule==2.15.0 apache-libcloud
+- pip install ansible==2.5.5 molecule==2.15.0 apache-libcloud pycrypto
 script:
 - molecule --debug test
 after_script:
 - molecule --debug destroy
 env:
+  matrix:
+  - GCE_CREDENTIALS_FILE="$(pwd)/credentials.json"
   global:
   - secure: cFRwq1IMvIQA18C5/Zfrh/owXTNBKAZ9G2aDUcn0ME31+gZNIT9LjMifyc2dglqAVjHI0XB/aJhQ62Ww72g0Nk1aCRJHfkbFYYbqaEpTloFdxHTwk9xVoq1pVZe1HHSsAGnQ6rr/OSIPvzI4AsqeFWq+mVzJDs9M7NBY8l0FHlEhm48Ppwy6azbMWOeQodclnOe8eJQntLXK3WIuCnD8f6F2zVvJq8vIjyanMDpI0kPBJpZWw5aopdzGkd0vBp5XR5GGpobuhdNOXiK1BhUf5qdx1SDXHftm0q9M9RcKgW64wx0wwzl74IsQhbdpbMU/sGXqQvoidsZYWrzi7hK1m75Oq8r/+5+RMzRK9Gg0nWJqNkungAW609oB1LR9308rEywJ5/QLWqGjkxMoXx1LQhxwzW6hRTDOa8gfRe0jDWZESyzCthUWdoPC1pVtXvN+X7ZIV2a11lUQc3omCZrJpw6UdNWmtXSNFPmyMb0kS+eKLGk8Vf8Q35nEIe1R/oi2GKgzJsY8XfgTsc+s2Suxpn/4LTs76d56CmQayFoaKKA19gZbQyAXhG7BX55HVQI19/GwVyM5oXHnCAe6AmDP2vqSPOdRLn4Vi4dbemLop0kI2eqjA2k04GFiN6HS4DnVjNJJGI2Dl9fMWp8Zw93aXJ6NEQfg8mFqJBb867POHQc=
   - secure: AojrxMfizL9GYcmTHHp4jIzdPf4lPUw5zUGDKfvQqq3QBxOi3JkWucUO10l9i8YqGpGv/cNwtMUznUdenVgCC3w1l8rpbpbQWnjWHR+6vQozwW3czgM3y0n1mSj+jL5ODn8We4m62inzfoWsPQ5+Wnb/447haOVJSFD36t9kCXdrsrdJnp2Z8IObzg7wz/CioCKU8lVnbW07tyXSFCgBhVZA02ibYB3Nxg0AaX1PQBAgVUl6O2U1ggcrOWmmO00Vi7+AFfP+uAqZRB/2Liygo+V/n2OrOMhT6yBpKk1M0XWPUswnGoInhLFNXQJtt498vdKZenOSEDjFuOHviYv+mETvAz936ijMi9rnh3By9EXIEvG/HnoFSD2sxfsw+1PVKJTxbdsV2IDmB7MoQCBNKR0zV054J/mVsJAzC4eXx7lRI/9nYptzizMIuJyq/F9Ihw7gro4a9kI2px8FNP8Bi4i6Q0kPoesFWTw4pA02ujzCU/UzShvB4qaKhg6Jqg6PkXmtQT0eErr39U1R5qc8ZFFsyicxH3OdsWzONGKd3NLIfW46ADQedMLc5biF3FYZ+CqaU+p33+bFmFfd0leRwTgOi0bSprTUWacPeIO/aCxM6+O363/k/vvJK1WSj5vOJQya0vzH53x/xht08FF4Vw4B4rHDM5e2T0Eqq+lZK9M=
